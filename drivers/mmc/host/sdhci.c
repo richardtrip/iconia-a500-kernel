@@ -1914,6 +1914,9 @@ int sdhci_add_host(struct sdhci_host *host)
 	if (host->quirks & SDHCI_QUIRK_RUNTIME_DISABLE)
 		mmc->caps |= MMC_CAP_DISABLE;
 
+	if (host->quirks & SDHCI_QUIRK_RUNTIME_DISABLE)
+		mmc->caps |= MMC_CAP_DISABLE;
+
 	mmc->caps |= MMC_CAP_ERASE;
 
 	mmc->ocr_avail = 0;
