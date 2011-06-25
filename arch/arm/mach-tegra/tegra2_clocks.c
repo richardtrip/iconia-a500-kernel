@@ -1670,11 +1670,11 @@ static struct clk tegra_pll_u = {
 
 static struct clk_pll_freq_table tegra_pll_x_freq_table[] = {
 
-	/* 1.7 GHz */
-	{ 12000000, 1700000000, 850, 6, 1, 12},
-	{ 13000000, 1700000000, 985, 8, 1, 12},
-	{ 19200000, 1700000000, 1000, 12, 1, 8},
-	{ 26000000, 1700000000, 850, 13, 1, 12},
+//	/* 1.7 GHz */
+//	{ 12000000, 1700000000, 850, 6, 1, 12},
+//	{ 13000000, 1700000000, 985, 8, 1, 12},
+//	{ 19200000, 1700000000, 1000, 12, 1, 8},
+//	{ 26000000, 1700000000, 850, 13, 1, 12},
 
 	/* 1.6 GHz */
 	{ 12000000, 1600000000, 800, 6, 1, 12},
@@ -1694,7 +1694,6 @@ static struct clk_pll_freq_table tegra_pll_x_freq_table[] = {
 	{ 19200000, 1408000000, 875, 12, 1, 8},
 	{ 26000000, 1408000000, 700, 13, 1, 12},
 
->>>>>>> 600dbb3... Edit freq. table
 	/* 1.2 GHz */
 	{ 12000000, 1200000000, 600,  6,  1, 12},
 	{ 13000000, 1200000000, 923,  10, 1, 12},
@@ -1758,6 +1757,9 @@ static struct clk tegra_pll_x = {
 	.ops       = &tegra_pll_ops,
 	.reg       = 0xe0,
 	.parent    = &tegra_clk_m,
+#ifdef CONFIG_TEGRA_OC
+	.max_rate  = 1600000000,
+#else
 	.max_rate  = 1000000000,
 	.u.pll = {
 		.input_min = 2000000,
@@ -1885,7 +1887,11 @@ static struct clk tegra_clk_cclk = {
 	.inputs	= mux_cclk,
 	.reg	= 0x20,
 	.ops	= &tegra_super_ops,
-	.max_rate = 1000000000,
+#ifdef CONFIG_TEGRA_OC
+	.max_rate  = 1600000000,
+#else
+	.max_rate  = 1000000000,
+#endif
 };
 
 static struct clk tegra_clk_sclk = {
@@ -1901,6 +1907,9 @@ static struct clk tegra_clk_virtual_cpu = {
 	.name      = "cpu",
 	.parent    = &tegra_clk_cclk,
 	.ops       = &tegra_cpu_ops,
+#ifdef CONFIG_TEGRA_OC
+	.max_rate  = 1600000000,
+#else
 	.max_rate  = 1000000000,
 	.u.cpu = {
 		.main      = &tegra_pll_x,
@@ -2292,6 +2301,11 @@ static struct tegra_sku_rate_limit sku_limits[] =
 	RATE_LIMIT("cclk",	750000000, 0x07, 0x10),
 	RATE_LIMIT("pll_x",	750000000, 0x07, 0x10),
 
+#ifdef CONFIG_TEGRA_OC
+	RATE_LIMIT("cpu",	1600000000, 0x04, 0x08, 0x0F),
+	RATE_LIMIT("cclk",	1600000000, 0x04, 0x08, 0x0F),
+	RATE_LIMIT("pll_x",	1600000000, 0x04, 0x08, 0x0F),
+#else
 	RATE_LIMIT("cpu",	1000000000, 0x04, 0x08, 0x0F),
 	RATE_LIMIT("cclk",	1000000000, 0x04, 0x08, 0x0F),
 	RATE_LIMIT("pll_x",	1000000000, 0x04, 0x08, 0x0F),
@@ -2437,11 +2451,10 @@ static struct cpufreq_frequency_table freq_table_1p7GHz[] = {
 	{ 9, 1408000 },
 	{ 10, 1504000 },
 	{ 11, 1600000 },
-	{ 12, 1700000 },
-	{ 13, CPUFREQ_TABLE_END },
+//	{ 12, 1700000 },
+	{ 12, CPUFREQ_TABLE_END },
 };
 
->>>>>>> 600dbb3... Edit freq. table
 static struct tegra_cpufreq_table_data cpufreq_tables[] = {
 	{ freq_table_750MHz, 1, 4 },
 	{ freq_table_1p0GHz, 2, 6 },
