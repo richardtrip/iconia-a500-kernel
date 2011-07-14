@@ -73,6 +73,10 @@ config TEGRA_SYSTEM_DMA
 	  Adds system DMA functionality for NVIDIA Tegra SoCs, used by
 	  several Tegra device drivers
 
+config TEGRA_OVERCLOCK
+	bool "Enable Overclocking"
+	default n
+
 config TEGRA_SPI_SLAVE
        tristate "Nvidia Tegra SPI slave driver"
        depends on ARCH_TEGRA
@@ -163,4 +167,3 @@ config TEGRA_CPU_FREQ_MIN
         int "Min CPU Frequency"
         depends on TEGRA_CPU_FREQ_SET_MIN_MAX
         default 216000
->>>>>>> ce25edc... Added MIN/MAX
