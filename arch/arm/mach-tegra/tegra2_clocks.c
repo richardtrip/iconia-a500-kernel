@@ -1754,6 +1754,7 @@ static struct clk tegra_pll_x = {
 	.max_rate  = 1600000000,
 #else
 	.max_rate  = 1000000000,
+#endif
 	.u.pll = {
 		.input_min = 2000000,
 		.input_max = 31000000,
@@ -1904,6 +1905,7 @@ static struct clk tegra_clk_virtual_cpu = {
 	.max_rate  = 1600000000,
 #else
 	.max_rate  = 1000000000,
+#endif
 	.u.cpu = {
 		.main      = &tegra_pll_x,
 		.backup    = &tegra_pll_p,
@@ -2302,7 +2304,7 @@ static struct tegra_sku_rate_limit sku_limits[] =
 	RATE_LIMIT("cpu",	1000000000, 0x04, 0x08, 0x0F),
 	RATE_LIMIT("cclk",	1000000000, 0x04, 0x08, 0x0F),
 	RATE_LIMIT("pll_x",	1000000000, 0x04, 0x08, 0x0F),
-
+#endif
 	RATE_LIMIT("cpu",	1200000000, 0x14, 0x17, 0x18, 0x1B, 0x1C),
 	RATE_LIMIT("cclk",	1200000000, 0x14, 0x17, 0x18, 0x1B, 0x1C),
 	RATE_LIMIT("pll_x",	1200000000, 0x14, 0x17, 0x18, 0x1B, 0x1C),
