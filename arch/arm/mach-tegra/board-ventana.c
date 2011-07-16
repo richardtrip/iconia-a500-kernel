@@ -774,7 +774,7 @@ static struct usb_phy_plat_data tegra_usb_phy_pdata[] = {
 	},
 	[2] = {
 			.instance = 2,
-			.vbus_gpio = TEGRA_GPIO_PD3,
+			.vbus_gpio = -1,
 	},
 };
 
@@ -782,17 +782,17 @@ static struct tegra_ehci_platform_data tegra_ehci_pdata[] = {
 	[0] = {
 			.phy_config = &utmi_phy_config[0],
 			.operating_mode = TEGRA_USB_HOST,
-			.power_down_on_bus_suspend = 0,
-	},
+			.power_down_on_bus_suspend = 1,
+		},
 	[1] = {
 			.phy_config = &ulpi_phy_config,
 			.operating_mode = TEGRA_USB_HOST,
-			.power_down_on_bus_suspend = 0,
-	},
+			.power_down_on_bus_suspend = 1,
+		},
 	[2] = {
 			.phy_config = &utmi_phy_config[1],
 			.operating_mode = TEGRA_USB_HOST,
-			.power_down_on_bus_suspend = 0,
+			.power_down_on_bus_suspend = 1,
 	},
 };
 
