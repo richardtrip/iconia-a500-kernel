@@ -2834,8 +2834,11 @@ static int __exit fsl_udc_remove(struct platform_device *pdev)
 static int fsl_udc_suspend(struct platform_device *pdev, pm_message_t state)
 {
     if (udc_controller->transceiver) {
+        /* enable clock */
+        fsl_udc_clk_resume(true);
         if (udc_controller->transceiver->state != OTG_STATE_B_PERIPHERAL) {
             /* we are not in device mode, return */
+	fsl_udc_clk_suspend(true);
             return 0;
         }
     }
