@@ -114,7 +114,7 @@ static struct tegra_audio_platform_data tegra_spdif_pdata = {
 
 static struct tegra_utmip_config utmi_phy_config[] = {
 	[0] = {
-			.hssync_start_delay = 9,
+			.hssync_start_delay = 0,
 			.idle_wait_delay = 17,
 			.elastic_limit = 16,
 			.term_range_adj = 6,
@@ -123,7 +123,7 @@ static struct tegra_utmip_config utmi_phy_config[] = {
 			.xcvr_lsrslew = 2,
 	},
 	[1] = {
-			.hssync_start_delay = 9,
+			.hssync_start_delay = 0,
 			.idle_wait_delay = 17,
 			.elastic_limit = 16,
 			.term_range_adj = 6,
@@ -239,7 +239,7 @@ static __initdata struct tegra_clk_init_table ventana_clk_init_table[] = {
 	{ "blink",	"clk_32k",	32768,		false},
 	{ "pll_p_out4",	"pll_p",	24000000,	true },
 	{ "pwm",	"clk_m",	12000000,	false},
-	{ "pll_a",	NULL,		56448000,	true},
+	{ "pll_a",	NULL,		11289600,	true},
 	{ "pll_a_out0",	NULL,		11289600,	true},
 	{ "i2s1",	"pll_a_out0",	2822400,	true},
 	{ "i2s2",	"pll_a_out0",	11289600,	true},
@@ -782,17 +782,17 @@ static struct tegra_ehci_platform_data tegra_ehci_pdata[] = {
 	[0] = {
 			.phy_config = &utmi_phy_config[0],
 			.operating_mode = TEGRA_USB_HOST,
-			.power_down_on_bus_suspend = 1,
-		},
+			.power_down_on_bus_suspend = 0,
+	},
 	[1] = {
 			.phy_config = &ulpi_phy_config,
 			.operating_mode = TEGRA_USB_HOST,
-			.power_down_on_bus_suspend = 1,
-		},
+			.power_down_on_bus_suspend = 0,
+	},
 	[2] = {
 			.phy_config = &utmi_phy_config[1],
 			.operating_mode = TEGRA_USB_HOST,
-			.power_down_on_bus_suspend = 1,
+			.power_down_on_bus_suspend = 0,
 	},
 };
 
