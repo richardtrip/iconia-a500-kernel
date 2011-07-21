@@ -31,6 +31,7 @@
 #include <linux/io.h>
 #include <linux/delay.h>
 #include <linux/err.h>
+#include <linux/wakelock.h>
 
 #define USB_PHY_WAKEUP		0x408
 #define  USB_ID_INT_EN		(1 << 0)
@@ -42,6 +43,8 @@
 #define  USB_VBUS_INT_STATUS	(1 << 9)
 #define  USB_VBUS_STATUS	(1 << 10)
 #define  USB_INTS		(USB_VBUS_INT_STATUS | USB_ID_INT_STATUS)
+
+static struct wake_lock usb_wake_lock;
 
 struct tegra_otg_data {
 	struct otg_transceiver otg;
@@ -165,11 +168,19 @@ static void irq_work(struct work_struct *work)
 		if (to == OTG_STATE_A_SUSPEND) {
 			if (from == OTG_STATE_A_HOST)
 				tegra_stop_host(tegra);
-			else if (from == OTG_STATE_B_PERIPHERAL && otg->gadget)
+			else if (from == OTG_STATE_B_PERIPHERAL && otg->gadget) {
 				usb_gadget_vbus_disconnect(otg->gadget);
+				if(from != OTG_STATE_A_HOST){
+					wake_lock_timeout(&usb_wake_lock, HZ);
+					printk(KERN_INFO "vbus disconnected, unlock wakelock\n");
+				}
+			}
 		} else if (to == OTG_STATE_B_PERIPHERAL && otg->gadget) {
-			if (from == OTG_STATE_A_SUSPEND)
+			if (from == OTG_STATE_A_SUSPEND) {
 				usb_gadget_vbus_connect(otg->gadget);
+                                wake_lock(&usb_wake_lock);
+                                printk(KERN_INFO "vbus connected, lock wakelock\n");
+                        }
 		} else if (to == OTG_STATE_A_HOST) {
 			if (from == OTG_STATE_A_SUSPEND)
 			tegra_start_host(tegra);
@@ -289,6 +300,7 @@ static int tegra_otg_probe(struct platform_device *pdev)
 	tegra->otg.set_suspend = tegra_otg_set_suspend;
 	tegra->otg.set_power = tegra_otg_set_power;
 	spin_lock_init(&tegra->lock);
+        wake_lock_init(&usb_wake_lock, WAKE_LOCK_SUSPEND, "tegra_otg");
 
 	platform_set_drvdata(pdev, tegra);
 	tegra_clone = tegra;
